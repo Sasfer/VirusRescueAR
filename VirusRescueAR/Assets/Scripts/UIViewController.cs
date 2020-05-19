@@ -11,10 +11,19 @@ namespace NewHelicopter
         [Header("FlightView")]
         public Text HeigthView;
         public Text EngineForceView;
+        public Text Damage;
+        public Text Person;
+        public Text Time;
+        public Text Level;
+        public Text Capacity;
         public GameObject RestartButton;
         public GameObject ExitButton;
         public GameObject MenuButton;
         public GameObject MenuPanel;
+        public GameObject JuegoObjetos;
+        public GameObject Data;
+
+        private bool Inicio = true;
 
         public static UIViewController runtime;
 
@@ -45,7 +54,13 @@ namespace NewHelicopter
             RestartButton.SetActive(!isShow);
             ExitButton.SetActive(!isShow);
             MenuButton.SetActive(!isShow);
+            JuegoObjetos.SetActive(!isShow);
             MenuPanel.SetActive(isShow);
+
+            if(Inicio == false)
+            {
+                Data.SetActive(!isShow);
+            }
         }
 
         public void ShowInfo()
@@ -56,11 +71,21 @@ namespace NewHelicopter
         public void HideInfo()
         {
             ShowInfoPanel(false);
+
+            if(Inicio == true)
+            {
+                Inicio = false;
+            }
+        }
+
+        public void PauseGame()
+        {
+            ShowInfoPanel(true);
         }
 
         public void RestartGame()
         {
-            SceneManager.LoadScene("PruebaARF");
+            SceneManager.LoadScene("GameVirusRescueAR");
         }
 
         public void ExitGame()

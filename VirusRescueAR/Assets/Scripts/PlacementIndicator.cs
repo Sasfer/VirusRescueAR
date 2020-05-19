@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
-using System;
 
 public class PlacementIndicator : MonoBehaviour
 {
-	private ARRaycastManager rayManager;
-	private GameObject visual;
+	public ARRaycastManager rayManager;
+	public GameObject visual;
    
     void Start()
     {
         // get the components
 		rayManager = FindObjectOfType<ARRaycastManager>();
-		visual = transform.GetChild(0).gameObject;
+		visual = this.transform.GetChild(0).gameObject;
 		 
 		// hide the placement indicator visual
 		visual.SetActive(false);

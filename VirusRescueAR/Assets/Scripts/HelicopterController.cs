@@ -8,6 +8,18 @@ namespace NewHelicopter
     public class HelicopterController : MonoBehaviour
     {
 
+        private float time;
+        private int persona, dano;
+        [Header("Game")]
+        public bool pause = false;
+        public GameObject buttons;
+        public GameObject gameOverL;
+        public GameObject damageHeliL;
+        public GameObject timeFinish;
+        public GameObject exitB;
+        public GameObject resetB;
+        public GameObject pauseB;
+
         private string horizontalAxis = "Horizontal";
         private string verticalAxis = "Vertical";
         private string jumpButton = "Jump";
@@ -74,8 +86,36 @@ namespace NewHelicopter
             LiftProcess();
             MoveProcess();
             TiltProcess();
+            TimeProcess();
 
             Visualize();
+        }
+
+        void Start()
+        {
+            time = 300f;
+            dano = 0;
+            persona = 0;
+        }
+
+        private void TimeProcess()
+        {
+            if(pauseB.activeInHierarchy == false)
+            {
+                if(time > 0f)
+                {
+                    time -= Time.deltaTime;
+                }
+                else
+                {
+                    buttons.SetActive(false);
+                    gameOverL.SetActive(true);
+                    timeFinish.SetActive(true);
+                    exitB.SetActive(true);
+                    resetB.SetActive(true);
+                    pauseB.SetActive(false);
+                }
+            }
         }
 
         private void MoveProcess()
@@ -91,14 +131,16 @@ namespace NewHelicopter
             // to ground distance
             RaycastHit hit;
             var direction = transform.TransformDirection(Vector3.down);
-            var ray = new Ray(transform.position, direction);
-            if (Physics.Raycast(ray, out hit, 300, GroundMaskLayer))
-            {
-                Debug.DrawLine(transform.position, hit.point, Color.cyan);
-                distanceToGround = hit.distance;
-                pointToGround = hit.point;
+            if (transform.position.y <= 0.42){
+               var ray = new Ray(transform.position, direction);
+                if (Physics.Raycast(ray, out hit, 300, GroundMaskLayer))
+                {
+                    Debug.DrawLine(transform.position, hit.point, Color.cyan);
+                    distanceToGround = hit.distance;
+                    pointToGround = hit.point;
 
-                //isOnGround = hit.distance < 2f;
+                    //isOnGround = hit.distance < 2f;
+                } 
             }
 
             var upForce = 1 - Mathf.Clamp(HelicopterModel.transform.position.y / EffectiveHeight, 0, 1);
@@ -128,12 +170,12 @@ namespace NewHelicopter
 
             if (Input.GetAxis(jumpButton) > 0)
             {
-                EngineForce += 0.1f;
+                EngineForce += 0.05f;
             }
             else
             if (Input.GetAxis(jumpButton) < 0)
             {
-                EngineForce -= 0.12f;
+                EngineForce -= 0.06f;
             }
         }
 
@@ -163,14 +205,29 @@ namespace NewHelicopter
         }
         
 
-        private void OnCollisionEnter()
+        private void OnTriggerEnter(Collider objeto)
         {
-            IsOnGround = true;
+            switch(objeto.tag)
+            {
+                case "suelo":
+                    IsOnGround = true;
+                    break;
+                default:
+                    break;
+            }
+            
         }
 
-        private void OnCollisionExit()
+        private void OnTriggerExit(Collider objeto)
         {
-            IsOnGround = false;
+            switch(objeto.tag)
+            {
+                case "suelo":
+                    IsOnGround = false;
+                    break;
+                default:
+                    break;
+            }
         }
 
 
@@ -182,6 +239,11 @@ namespace NewHelicopter
                 DustAirController.VisualizeDustGround(DistanceToGround, PointToGround);
             }
 
+            if (UIViewController.runtime.Time != null)
+            {
+                    UIViewController.runtime.Time.text = string.Format("Tiempo [ {0} ] ", (int)time);
+            }
+
             if (UIViewController.runtime.EngineForceView != null)
             {
                 if((int)EngineForce >= 0)
@@ -189,10 +251,10 @@ namespace NewHelicopter
             }
 
             if (UIViewController.runtime.HeigthView != null)
-            {
-                if(transform.position.y >= 0.08f)
+            {   
+                if(transform.position.y >= 0.01f)
                 {
-                    UIViewController.runtime.HeigthView.text = string.Format("Altura [ {0} ] m", (float)Math.Round((double)(transform.position.y * 10.0f),1));
+                    UIViewController.runtime.HeigthView.text = string.Format("Altura [ {0} ] m", (float)Math.Round((double)(transform.position.y * 100.0f),1));
                 }
                 else
                 {

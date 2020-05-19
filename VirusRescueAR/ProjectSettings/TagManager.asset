@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - enemigo
+  - montana
+  - persona
+  - roca
+  - arbol
+  - helicoptero
   layers:
   - Default
   - TransparentFX
