@@ -45,42 +45,44 @@ namespace NewHelicopter
 
         void Start()
         {
-            ShowInfo();
-        }
-
-
-        private void ShowInfoPanel(bool isShow)
-        {
-            RestartButton.SetActive(!isShow);
-            ExitButton.SetActive(!isShow);
-            MenuButton.SetActive(!isShow);
-            JuegoObjetos.SetActive(!isShow);
-            MenuPanel.SetActive(isShow);
-
-            if(Inicio == false)
-            {
-                Data.SetActive(!isShow);
-            }
-        }
-
-        public void ShowInfo()
-        {
-            ShowInfoPanel(true);
+            RestartButton.SetActive(false);
+            ExitButton.SetActive(false);
+            MenuButton.SetActive(false);
+            JuegoObjetos.SetActive(false);
+            MenuPanel.SetActive(true);
         }
         
         public void HideInfo()
         {
-            ShowInfoPanel(false);
-
             if(Inicio == true)
             {
+                RestartButton.SetActive(true);
+                ExitButton.SetActive(true);
+                MenuButton.SetActive(false);
+                JuegoObjetos.SetActive(true);
+                MenuPanel.SetActive(false);
                 Inicio = false;
             }
+            else
+            {
+                RestartButton.SetActive(true);
+                ExitButton.SetActive(true);
+                MenuButton.SetActive(true);
+                JuegoObjetos.SetActive(true);
+                MenuPanel.SetActive(false);
+                Data.SetActive(true);
+            }
+           
         }
 
         public void PauseGame()
         {
-            ShowInfoPanel(true);
+            RestartButton.SetActive(false);
+            ExitButton.SetActive(false);
+            MenuButton.SetActive(false);
+            JuegoObjetos.SetActive(true);
+            MenuPanel.SetActive(true);
+            Data.SetActive(false);
         }
 
         public void RestartGame()

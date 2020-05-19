@@ -30,7 +30,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GameVirusRescueAR.unity
     guid: a6fe6095c7842094c9531ee8ea188879
   - enabled: 0
-    path: Assets/Scenes/PruebaAF.unity
+    path: Assets/Scenes/PruebaAR.unity
     guid: 968325128030b894898403b9bad45ade
   m_configObjects:
     com.unity.xr.arcore.PlayerSettings: {fileID: 11400000, guid: 529f0f7353808df438ab1e02e1d96216,

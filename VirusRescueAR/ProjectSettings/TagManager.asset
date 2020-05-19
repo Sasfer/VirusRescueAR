@@ -10,6 +10,8 @@ TagManager:
   - roca
   - arbol
   - helicoptero
+  - suelo
+  - casa
   layers:
   - Default
   - TransparentFX

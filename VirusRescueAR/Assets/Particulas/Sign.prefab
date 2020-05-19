@@ -343,8 +343,8 @@ MonoBehaviour:
   ExitButton: {fileID: 0}
   MenuButton: {fileID: 0}
   MenuPanel: {fileID: 0}
-  Indicator: {fileID: 0}
   JuegoObjetos: {fileID: 0}
+  Data: {fileID: 0}
 --- !u!1 &28163852646773820
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,7 +671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3215998999127714826}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Data
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
