@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
  using System;
 
@@ -8,17 +8,20 @@ namespace NewHelicopter
     public class HelicopterController : MonoBehaviour
     {
 
-        private float time;
-        private int persona, dano;
+        private float time, dano;
+        private int persona, capacidad;
         [Header("Game")]
         public bool pause = false;
         public GameObject buttons;
         public GameObject gameOverL;
         public GameObject damageHeliL;
         public GameObject timeFinish;
+        public GameObject winL;
+        public GameObject capacidadL;
         public GameObject exitB;
         public GameObject resetB;
         public GameObject pauseB;
+        public GameObject nextLevelB;
 
         private string horizontalAxis = "Horizontal";
         private string verticalAxis = "Vertical";
@@ -30,6 +33,11 @@ namespace NewHelicopter
         [Header("View")]
         // to helicopter model
         public AudioSource HelicopterSound;
+        public AudioSource WinSound;
+        public AudioSource GameOverSound;
+        public AudioSource CollisionSound;
+        public AudioSource DestructionSound;
+
         public Rigidbody HelicopterModel;
         public HeliRotorController MainRotorController;
         public HeliRotorController SubRotorController;
@@ -37,15 +45,25 @@ namespace NewHelicopter
 
         private float minHeight, maxHeight, realHeight;
         [Header("Fly Settings")]
-        public LayerMask GroundMaskLayer = 1;
-        public float TurnForce = 0.05f;
-        public float ForwardForce = 0.25f;
-        public float ForwardTiltForce = 0.5f;
-        public float TurnTiltForce = 0.75f;
+        public LayerMask GroundMaskLayer = 4;
+        public float TurnForce = 0.04f;
+        public float ForwardForce = 0.2f;
+        public float ForwardTiltForce = 0.4f;
+        public float TurnTiltForce = 0.7f;
         public float EffectiveHeight = 0.4f;
 
-        public float turnTiltForcePercent = 0.005f;
-        public float turnForcePercent = 0.008f;
+        public float turnTiltForcePercent = 0.01f;
+        public float turnForcePercent = 0.013f;
+
+        private int zona1;
+        private int zona2;
+        private int zona3;
+        [Header("Person")]
+        public GameObject personZ1_1;
+        public GameObject personZ1_2;
+        public GameObject personZ2_1;
+        public GameObject personZ2_2;
+        public GameObject personZ3_1;
 
         private float _engineForce;
         public float EngineForce
@@ -56,9 +74,6 @@ namespace NewHelicopter
                 MainRotorController.RotarSpeed = value * 80;
                 SubRotorController.RotarSpeed = value * 40;
                 HelicopterSound.pitch = Mathf.Clamp(value / 40, 0, 1.2f);
-                if (UIGameController.runtime != null && UIGameController.runtime.EngineForceView != null)
-                    UIGameController.runtime.EngineForceView.text = string.Format("Engine value [ {0} ] ", (int)value);
-
                 _engineForce = value;
             }
         }
@@ -94,12 +109,24 @@ namespace NewHelicopter
 
         void Start()
         {
-            time = 300f;
-            dano = 0;
+            time = 180f;
+            dano = 0.0f;
             persona = 0;
-            EffectiveHeight = transform.position.y + 0.1075f;
+            capacidad = 0;
+            zona1 = 2;
+            zona2 = 2;
+            zona3 = 1;
+            EffectiveHeight = transform.position.y + 0.1f;
             minHeight = transform.position.y;
             maxHeight = transform.position.y + 0.43f;
+            GroundMaskLayer = 4;
+            TurnForce = 0.04f;
+            ForwardForce = 0.2f;
+            ForwardTiltForce = 0.4f;
+            TurnTiltForce = 0.7f;
+
+            turnTiltForcePercent = 0.01f;
+            turnForcePercent = 0.013f;
         }
 
         private void TimeProcess()
@@ -118,6 +145,8 @@ namespace NewHelicopter
                     exitB.SetActive(true);
                     resetB.SetActive(true);
                     pauseB.SetActive(false);
+                    HelicopterSound.mute = true;
+                    GameOverSound.volume = 0.1f;
                 }
             }
         }
@@ -135,18 +164,17 @@ namespace NewHelicopter
             // to ground distance
             RaycastHit hit;
             var direction = transform.TransformDirection(Vector3.down);
-            if (transform.position.y <= 0.42)
+            
+            var ray = new Ray(transform.position, direction);
+            if (Physics.Raycast(ray, out hit, 300, GroundMaskLayer))
             {
-               var ray = new Ray(transform.position, direction);
-                if (Physics.Raycast(ray, out hit, 300, GroundMaskLayer))
-                {
-                    Debug.DrawLine(transform.position, hit.point, Color.cyan);
-                    distanceToGround = hit.distance;
-                    pointToGround = hit.point;
+                Debug.DrawLine(transform.position, hit.point, Color.cyan);
+                distanceToGround = hit.distance;
+                pointToGround = hit.point;
 
-                    //isOnGround = hit.distance < 2f;
-                } 
-            }
+                //isOnGround = hit.distance < 2f;
+            } 
+
 
             var upForce = 1 - Mathf.Clamp(HelicopterModel.transform.position.y / EffectiveHeight, 0, 1);
             upForce = Mathf.Lerp(0f, EngineForce, upForce) * HelicopterModel.mass;
@@ -175,12 +203,12 @@ namespace NewHelicopter
 
             if (Input.GetAxis(jumpButton) > 0)
             {
-                EngineForce += 0.05f;
+                EngineForce += 0.1f;
             }
             else
             if (Input.GetAxis(jumpButton) < 0)
             {
-                EngineForce -= 0.06f;
+                EngineForce -= 0.12f;
             }
         }
 
@@ -194,10 +222,14 @@ namespace NewHelicopter
             }
 
             if (GetInput(jumpButton) > 0)
-                EngineForce += 0.1f;
-            
-            if (GetInput(jumpButton) < 0)
-                EngineForce -= 0.12f;
+            {
+                EngineForce += 0.08f;
+            }
+            else
+            {
+                if (GetInput(jumpButton) < 0)
+                    EngineForce -= 0.10f;
+            }
 
         }
 
@@ -211,6 +243,8 @@ namespace NewHelicopter
         
         private void FinishDamage()
         {
+            HelicopterSound.mute = true;
+            GameOverSound.volume = 0.1f;
             buttons.SetActive(false);
             exitB.SetActive(true);
             resetB.SetActive(true);
@@ -227,27 +261,131 @@ namespace NewHelicopter
                     IsOnGround = true;
                     break;
                 case "montana":
-                    dano = dano + 6;
-                    if(dano >= 100){
+                    dano = dano + 3.0f;
+                    if(dano >= 100.0f){
                         FinishDamage();
                     }
                     break;
                 case "casa":
-                    dano = dano + 5;
-                    if(dano >= 100){
+                    dano = dano + 2.0f;
+                    if(dano >= 100.0f){
                         FinishDamage();
                     }
                     break;
                 case "arbol":
-                    dano = dano + 3;
-                    if(dano >= 100){
+                    dano = dano + 1.0f;
+                    if(dano >= 100.0f){
                         FinishDamage();
                     }
                     break;
                 case "roca":
-                    dano = dano + 1;
-                    if(dano >= 100){
+                    dano = dano + 0.5f;
+                    if(dano >= 100.0f){
                         FinishDamage();
+                    }
+                    break;
+                case "zona":
+                    if(zona1 > 0){
+                        if(capacidad == 0 || capacidad == 1 || capacidad == 2)
+                        {
+                            if(zona1 == 2)
+                            {
+                                capacidad = capacidad + 2;
+                                personZ1_1.SetActive(false);
+                                personZ1_2.SetActive(false);
+                                zona1 = 0;
+                            }
+                            else if(zona1 == 1)
+                            {
+                                zona1 = 0;
+                                capacidad = capacidad + 1;
+                                if(personZ1_1.activeInHierarchy == true)
+                                    personZ1_1.SetActive(false);
+                                else if(personZ1_2.activeInHierarchy == true)
+                                    personZ1_2.SetActive(false);
+                            }
+                            
+                        }
+                        else if(capacidad == 3)
+                        {
+                            zona1 = zona1 - 1;
+                            capacidad = capacidad + 1;
+                            if(personZ1_1.activeInHierarchy == true)
+                                personZ1_1.SetActive(false);
+                            else if(personZ1_2.activeInHierarchy == true)
+                                personZ1_2.SetActive(false);
+                        }
+                        else
+                        {
+                            capacidadL.SetActive(true);
+                        }
+                    }
+                    break;
+                case "zona2":
+                    if(zona2 > 0){
+                        if(capacidad == 0 || capacidad == 1 || capacidad == 2)
+                        {
+                            if(zona2 == 2)
+                            {
+                                capacidad = capacidad + 2;
+                                personZ2_1.SetActive(false);
+                                personZ2_2.SetActive(false);
+                                zona2 = 0;
+                            }
+                            else if(zona2 == 1)
+                            {
+                                zona2 = 0;
+                                capacidad = capacidad + 1;
+                                if(personZ2_1.activeInHierarchy == true)
+                                    personZ2_1.SetActive(false);
+                                else if(personZ2_2.activeInHierarchy == true)
+                                    personZ2_2.SetActive(false);
+                            }
+                            
+                        }
+                        else if(capacidad == 3)
+                        {
+                            zona2 = zona2 - 1;
+                            capacidad = capacidad + 1;
+                            if(personZ2_1.activeInHierarchy == true)
+                                personZ2_1.SetActive(false);
+                            else if(personZ2_2.activeInHierarchy == true)
+                                personZ2_2.SetActive(false);
+                        }
+                        else
+                        {
+                            capacidadL.SetActive(true);
+                        }
+                    }
+                    break;
+                case "zona3":
+                    if(zona3 > 0)
+                    {
+                        if(capacidad == 0 || capacidad == 1 || capacidad == 2 || capacidad == 3)
+                        {
+                            capacidad = capacidad + 1;
+                            zona3 = 0;
+                            personZ3_1.SetActive(false);
+                        }
+                        else
+                        {
+                            capacidadL.SetActive(true);
+                        }
+                    }
+                    break;
+                case "helipuerto":
+                    persona = persona + capacidad;
+                    capacidad = 0;
+                    capacidadL.SetActive(false);
+                    if(persona == 5)
+                    {
+                        HelicopterSound.mute = true;
+                        WinSound.volume = 0.1f;
+                        winL.SetActive(true);
+                        nextLevelB.SetActive(true);
+                        buttons.SetActive(false);
+                        pauseB.SetActive(false);
+                        resetB.SetActive(false);
                     }
                     break;
                 default:
@@ -267,7 +405,6 @@ namespace NewHelicopter
             }
         }
 
-
         private void Visualize()
         {
             if (DustAirController != null)
@@ -283,7 +420,17 @@ namespace NewHelicopter
 
             if (UIViewController.runtime.Damage != null)
             {
-                    UIViewController.runtime.Damage.text = string.Format("Dano [ {0} ] %", (int)dano);
+                UIViewController.runtime.Damage.text = string.Format("Dano [ {0} ] %", (int)dano);
+            }
+
+            if (UIViewController.runtime.Capacity != null)
+            {
+                    UIViewController.runtime.Capacity.text = string.Format("Capacidad [ {0}/4 ]", (int)capacidad);
+            }
+
+            if (UIViewController.runtime.Person != null)
+            {
+                    UIViewController.runtime.Person.text = string.Format("Rescatados [ {0}/5 ] %", (int)persona);
             }
 
             if (UIViewController.runtime.EngineForceView != null)
@@ -294,11 +441,7 @@ namespace NewHelicopter
 
             if (UIViewController.runtime.HeigthView != null)
             {   
-                realHeight = maxHeight - transform.position.y;
-                realHeight = 0.43f - realHeight;
-                
-                UIViewController.runtime.HeigthView.text = string.Format("Altura [ {0} ] m", (float)Math.Round((double)(realHeight * 100.0f),1));
-                
+                UIViewController.runtime.HeigthView.text = string.Format("Altura [{0}] m", (float)Math.Round((double)(transform.position.y),4));
             }
         }
     }

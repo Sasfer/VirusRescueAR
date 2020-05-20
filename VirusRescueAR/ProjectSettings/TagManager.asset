@@ -12,6 +12,12 @@ TagManager:
   - helicoptero
   - suelo
   - casa
+  - zona
+  - zona2
+  - zona3
+  - persona2
+  - persona3
+  - helipuerto
   layers:
   - Default
   - TransparentFX
