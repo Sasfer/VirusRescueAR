@@ -12,26 +12,32 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/Game.unity
-    guid: ed99b7de30970ef4bac5ddee481e216d
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/Scenes/HelicopteroControlVuelo.unity
     guid: 7eb0e9f5cdbfaaf469d8197da77176bb
   - enabled: 0
-    path: Assets/Scenes/GameAR.unity
-    guid: 4191cda8fd09379489250d8203a9d4f9
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/PruebaARV.unity
-    guid: 180063cf5b54aaa46be8094efb50c30e
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/PruebaARF.unity
-    guid: 7e23b5bbf652d1a42bd6dfd607005b62
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/GameVirusRescueAR.unity
+    path: Assets/Scenes/GameARNivel1.unity
     guid: a6fe6095c7842094c9531ee8ea188879
   - enabled: 0
     path: Assets/Scenes/PruebaAR.unity
     guid: 968325128030b894898403b9bad45ade
+  - enabled: 1
+    path: Assets/Scenes/GameARNivel2.unity
+    guid: 20562f0dad5fd7540bcf6001b747184d
+  - enabled: 1
+    path: Assets/Scenes/GameARNivel3.unity
+    guid: 1cec646e720e0d042a3781c56ce840ce
   m_configObjects:
     com.unity.xr.arcore.PlayerSettings: {fileID: 11400000, guid: 529f0f7353808df438ab1e02e1d96216,
       type: 2}

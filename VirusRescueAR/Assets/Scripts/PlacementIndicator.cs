@@ -8,6 +8,7 @@ public class PlacementIndicator : MonoBehaviour
 {
 	public ARRaycastManager rayManager;
 	public GameObject visual;
+	public GameObject moveCel;
    
     void Start()
     {
@@ -32,8 +33,10 @@ public class PlacementIndicator : MonoBehaviour
 			transform.rotation = hits[0].pose.rotation;
 
 			// enable the visual if it's disabled
-			if(!visual.activeInHierarchy)
+			if(!visual.activeInHierarchy){
 			    visual.SetActive(true);
+			    moveCel.SetActive(false);
+			}
 		}
     }
 }

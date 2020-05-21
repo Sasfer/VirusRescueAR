@@ -22,6 +22,7 @@ namespace NewHelicopter
         public GameObject MenuPanel;
         public GameObject JuegoObjetos;
         public GameObject Data;
+        public GameObject moveCel;
 
         private bool Inicio = true;
 
@@ -61,6 +62,7 @@ namespace NewHelicopter
                 MenuButton.SetActive(false);
                 JuegoObjetos.SetActive(true);
                 MenuPanel.SetActive(false);
+                moveCel.SetActive(true);
                 Inicio = false;
             }
             else
@@ -71,6 +73,7 @@ namespace NewHelicopter
                 JuegoObjetos.SetActive(true);
                 MenuPanel.SetActive(false);
                 Data.SetActive(true);
+                moveCel.SetActive(false);
             }
            
         }
@@ -85,9 +88,14 @@ namespace NewHelicopter
             Data.SetActive(false);
         }
 
-        public void RestartGame()
+        public void NextLevel(string name)
         {
-            SceneManager.LoadScene("GameVirusRescueAR");
+            SceneManager.LoadScene(name);
+        }
+
+        public void RestartGame(string name)
+        {
+            SceneManager.LoadScene(name);
         }
 
         public void ExitGame()

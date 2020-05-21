@@ -11,6 +11,7 @@ public class Object : MonoBehaviour
     public GameObject buttons;
     public GameObject data;
     public GameObject pause;
+    public GameObject moveCel;
 
     private PlacementIndicator placementIndicator;
     private bool setObject = false;
@@ -32,6 +33,7 @@ public class Object : MonoBehaviour
             objects.SetActive(true);
             objects.transform.position = placementIndicator.transform.position;
             objects.transform.rotation = placementIndicator.transform.rotation;
+            moveCel.SetActive(false);
             indicator.SetActive(false);
             pause.SetActive(true);
             buttons.SetActive(true);
