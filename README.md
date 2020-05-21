@@ -12,38 +12,39 @@ _**VirusRescueAR**  es un juego de **realidad aumentada** que invita a su usuari
 
 ## Aplicación ⚙️
 
-_ Menú principal _
-
 ```
+Menú principal
+```
+
 ![Pantalla](/Screenshots/inicio-1.jpg)
-```
-
-_ Detección de plano _
 
 ```
+Detección de plano
+```
+
 ![Pantalla](/Screenshots/inicio-2.jpg)
-```
-
-_ Indicador para ubicación del terreno de juego _
 
 ```
+Indicador para ubicación del terreno de juego
+```
+
 ![Pantalla](/Screenshots/inicio-3.jpg)
-```
-
-_ Niveles de juego _
 
 ```
+Niveles de juego
+```
+
 **Nivel 1**
+
 ![Pantalla](/Screenshots/Nivel1-2.jpg)
-```
-```
+
 **Nivel 2**
+
 ![Pantalla](/Screenshots/nivel2-2.jpg)
-```
-```
+
 **Nivel 3**
+
 ![Pantalla](/Screenshots/nivel3-2.jpg)
-```
 
 ### Usuario 🔩
 
@@ -53,28 +54,22 @@ _VirusRescueAR es un juego de realidad aumentada dirigido a usuarios que tienen 
 
 _Para poder hacer uso de esta aplicación de requiere de:_
 
-```
-Dispositivo móvil Android 7.0.
-```
 
-```
-Dispositivo compatible con ARCore.
-https://developers.google.com/ar/discover/supported-devices
-```
+* Dispositivo móvil Android 7.0.
 
-```
-Dispositivo móvil con cámara en la parte posterior.
-```
+* [Dispositivo compatible con ARCore.](https://developers.google.com/ar/discover/supported-devices)
 
-```
-Espacio libre mínimo de 80 MB.
-```
+* Dispositivo móvil con cámara en la parte posterior.
+
+* Espacio libre mínimo de 80 MB.
 
 ### Construido con 🛠️
-
-_ _
 
 * Unity 2019.3.1
 * AR Foundation 2.1.8
 * ARCores XR Plugin 2.1.8
+
+## APK y videos ⚙️
+
+* [Evidencia](https://drive.google.com/drive/folders/1mUTdDyzbOijAVMY-UIOwuKwBf0ONdK9K?usp=sharing)
 
