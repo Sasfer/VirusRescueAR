@@ -1,8 +1,10 @@
 # VirusRescueAR
 
-_Proyecto final
-Temas selectos de Computación III
-Realidad Virtual y Realidad Aumentada_
+_Proyecto final_
+
+_Temas selectos de Computación III_
+
+_Realidad Virtual y Realidad Aumentada_
 
 ## Comenzando 🚀
 
